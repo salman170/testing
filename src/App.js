@@ -20,37 +20,63 @@ const App = () => {
     });
   }, [user]);
 
-  if (user === null) {
-    return (
-      <div>
-        <h1>Firebase</h1>
-        <input
-          onChange={(e) => setEmail(e.target.value)}
-          value={email}
-          type='email'
-          placeholder='Enter Email'
-        />
-        <input
-          onChange={(e) => setPassword(e.target.value)}
-          value={password}
-          type='password'
-          placeholder='Enter password'
-        />
-        <button
-          onClick={() => {
-            Firebase.signupUserWithEmailAndPassword(email, password);
-            // Firebase.putData('users/' + 'saif', { email, password });
-          }}
-        >
-          SignUp
-        </button>
-        <h1>Signin</h1>
-        <SignupPage />
-      </div>
-    );
-  }
+  // if (user === null) {
+  return (
+    <div>
+      {/* <h1>Firebase</h1> */}
+      <input
+        onChange={(e) => setEmail(e.target.value)}
+        value={email}
+        type='email'
+        placeholder='Enter Email'
+      />
+      <input
+        onChange={(e) => setPassword(e.target.value)}
+        value={password}
+        type='password'
+        placeholder='Enter password'
+      />
+      <button
+        onClick={() => {
+          Firebase.signupUserWithEmailAndPassword(email, password);
+          // Firebase.putData('users/' + 'saif', { email, password });
+        }}
+      >
+        SignUp
+      </button>
+      <h1>Signin</h1>
+      <SignupPage />
+      <button onClick={()=>{
+        Firebase.writeData()
+      }}>Put Data</button>
+      <br />
+      <button onClick={()=>{
+        Firebase.subCollection()
+      }}>Put SubData</button>
+      <br />
+      <br />
+      <button onClick={()=>{
+        Firebase.getDocument()
+      }}>
+        get Doc
+      </button>
+      <button onClick={()=>{
+        Firebase.getDocByQuery()
+      }}>
+        get Doc by query
+      </button>
+      <br />
+      <button onClick={()=>{
+        Firebase.update()
+      }}>
+        update
+      </button>
+      
+    </div>
+  );
+  // }
 
-  return <div>Hello world</div>;
+  // return <div>Hello world</div>;
 };
 
 export default App;
