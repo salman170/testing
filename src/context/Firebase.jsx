@@ -5,7 +5,11 @@ import { initializeApp } from 'firebase/app';
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
-import { getDatabase, set, ref } from 'firebase/database';
+
+//to get the database we use getDatabase , to set the data we use set and to give the refrence of the database we use ref for giving refernce to the root , ///////Realtimedatabase
+import { getDatabase, set, ref, get, child, onValue } from 'firebase/database';
+
+//Firestore
 import {
   getFirestore,
   collection,
@@ -15,7 +19,7 @@ import {
   query,
   where,
   getDocs,
-  updateDoc
+  updateDoc,
 } from 'firebase/firestore';
 
 // Your web app's Firebase configuration
@@ -34,6 +38,7 @@ export const FirebaseApp = initializeApp(firebaseConfig);
 
 export const FirebaseAuth = getAuth(FirebaseApp);
 
+//FirebaseStore
 export const FirebaseStore = getFirestore(FirebaseApp);
 
 //creating context
@@ -42,6 +47,7 @@ const FirebaseContext = createContext(null);
 //custom hook for returning usecontext
 export const useFirebase = () => useContext(FirebaseContext);
 
+//Realtimedatabase
 const database = getDatabase(FirebaseApp);
 
 //creating Provider
@@ -50,6 +56,7 @@ export const FirebaseProvider = (props) => {
     return createUserWithEmailAndPassword(FirebaseAuth, email, password);
   };
 
+  //Realtimedatabase
   const putData = (key, data) => set(ref(database, key), data);
 
   const writeData = async () => {
@@ -72,6 +79,14 @@ export const FirebaseProvider = (props) => {
     );
     console.log(result);
   };
+  const getRealtime = async () =>
+    get(child(ref(database), 'Grandfather/father')).then((snap) =>
+      console.log(snap.val())
+    );
+    
+  const realtimeTrack  = async ()=>{
+    onValue(ref(database, "Grandfather"), (snapshot) => {console.log(snapshot.val())})
+  }
 
   const getDocument = async () => {
     const docRef = doc(FirebaseStore, 'Cities', 'JIEllPgLLzEZC76mpUH7');
@@ -87,13 +102,12 @@ export const FirebaseProvider = (props) => {
     snap.forEach((data) => console.log(data.data()));
   };
 
-  const update = async ()=>{
-    const docRef = doc(FirebaseStore, "Cities","JIEllPgLLzEZC76mpUH7" )
-    updateDoc(docRef,{
-      name: "New Delhi"
-    })
-
-  }
+  const update = async () => {
+    const docRef = doc(FirebaseStore, 'Cities', 'JIEllPgLLzEZC76mpUH7');
+    updateDoc(docRef, {
+      name: 'New Delhi',
+    });
+  };
   return (
     <FirebaseContext.Provider
       value={{
@@ -104,7 +118,9 @@ export const FirebaseProvider = (props) => {
         subCollection,
         getDocument,
         getDocByQuery,
-        update
+        update,
+        getRealtime,
+        realtimeTrack
       }}
     >
       {props.children}

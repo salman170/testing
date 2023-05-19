@@ -20,6 +20,11 @@ const App = () => {
     });
   }, [user]);
 
+  //any type of data can be added to realtime database
+  const putDataNew = () => {
+    Firebase.putData('Grandfather/father/child', { id: 1, age:25, name:"Salman" });
+  };
+
   // if (user === null) {
   return (
     <div>
@@ -46,32 +51,52 @@ const App = () => {
       </button>
       <h1>Signin</h1>
       <SignupPage />
-      <button onClick={()=>{
-        Firebase.writeData()
-      }}>Put Data</button>
+      <button
+        onClick={() => {
+          Firebase.writeData();
+        }}
+      >
+        Put Data
+      </button>
       <br />
-      <button onClick={()=>{
-        Firebase.subCollection()
-      }}>Put SubData</button>
+      <button
+        onClick={() => {
+          Firebase.subCollection();
+        }}
+      >
+        Put SubData
+      </button>
       <br />
       <br />
-      <button onClick={()=>{
-        Firebase.getDocument()
-      }}>
+      <button
+        onClick={() => {
+          Firebase.getDocument();
+        }}
+      >
         get Doc
       </button>
-      <button onClick={()=>{
-        Firebase.getDocByQuery()
-      }}>
+      <button
+        onClick={() => {
+          Firebase.getDocByQuery();
+        }}
+      >
         get Doc by query
       </button>
       <br />
-      <button onClick={()=>{
-        Firebase.update()
-      }}>
+      <button
+        onClick={() => {
+          Firebase.update();
+        }}
+      >
         update
       </button>
-      
+
+      <br />
+      <br />
+      <button onClick={putDataNew}>Realtime add data</button>
+      <br />
+      <button onClick={Firebase.getRealtime}>Realtime get data</button>
+      <button onClick={Firebase.realtimeTrack}>realtimeTrack</button>
     </div>
   );
   // }
